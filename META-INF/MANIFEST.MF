@@ -1,0 +1,5 @@
+Manifest-Version: 1.1
+Plugin-Name: OCLHighlightPlugin
+Plugin-Version: 1.1
+Main-Class: org.tzi.use.gui.plugins.OCLHighlightPlugin
+Plugin-Publisher: Maria Sales

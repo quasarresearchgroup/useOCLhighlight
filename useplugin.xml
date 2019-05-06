@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?use version="2.4.0"?>
+<plugin name="OCLHighlight" version="1.1">
+	<actions>
+		<action label="Highlight Expression" icon="resources/Highlighter.png"
+			class="org.tzi.use.gui.plugins.OCLHighlightExtent" tooltip="Highlight Expression"
+			menu="View" menuitem="OCL Highlight" toolbaritem="plugins"
+			id="org.tzi.use.gui.plugins.OCLHighlightExtent">
+		</action>
+	</actions>
+</plugin>
