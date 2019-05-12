@@ -1,4 +1,4 @@
-package org.tzi.use.gui.plugins;
+package org.tzi.use.gui.plugins.highlight;
 
 import java.awt.Color;
 import java.lang.reflect.Field;

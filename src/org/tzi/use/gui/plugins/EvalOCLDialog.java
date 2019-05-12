@@ -1,10 +1,3 @@
-/*
- * USE - UML based specification environment
- * Copyright (C) 1999-2004 Mark Richters, University of Bremen
- * 
- * Modified by: Maria Sales
- */
-
 package org.tzi.use.gui.plugins;
 
 import java.awt.BorderLayout;
@@ -35,6 +28,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.tzi.use.config.Options;
+import org.tzi.use.gui.plugins.complexity.ComplexityMetric;
+import org.tzi.use.gui.plugins.complexity.ExpressionComplexityVisitor;
+import org.tzi.use.gui.plugins.complexity.IComplexityMetric;
+import org.tzi.use.gui.plugins.complexity.IComplexityMetricResult;
+import org.tzi.use.gui.plugins.highlight.HighlightExpressionVisitor;
 import org.tzi.use.gui.util.CloseOnEscapeKeyListener;
 import org.tzi.use.gui.util.TextComponentWriter;
 import org.tzi.use.gui.views.diagrams.DiagramOptions;
@@ -64,10 +62,13 @@ import org.tzi.use.util.StringUtil;
 import org.tzi.use.util.TeeWriter;
 
 /**
+ * USE - UML based specification environment
+ * Copyright (C) 1999-2004 Mark Richters, University of Bremen 
+ * Original author: Mark Richters
+ * 
  * A dialog for entering and evaluating OCL expressions.
  * 
- * @version $ProjectVersion: 0.393 $
- * @author Mark Richters
+ * @author Maria Sales
  */
 @SuppressWarnings("serial")
 class EvalOCLDialog extends JDialog {
@@ -85,6 +86,8 @@ class EvalOCLDialog extends JDialog {
 
 	private List<ClassDiagramView> classDiagrams;
 
+	private OCLComplexityDialog complexityDialog;
+	
 	private final ChangeListener sessionChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
@@ -165,47 +168,21 @@ class EvalOCLDialog extends JDialog {
 		Dimension dim = btnEval.getMaximumSize();
 		dim.width = Short.MAX_VALUE;
 		btnEval.setMaximumSize(dim);
-		JButton btnClear = new JButton("Clear");
-		btnClear.setMnemonic('C');
-		btnClear.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				fTextOut.setText(null);
-				if (fEvalBrowser != null) {
-					fEvalBrowser.getFrame().setVisible(false);
-					fEvalBrowser.getFrame().dispose();
-				}
-
-				// Reset color
-				resetClassDiagramColor();
-			}
-
-		});
-		dim = btnClear.getMaximumSize();
-		dim.width = Short.MAX_VALUE;
-		btnClear.setMaximumSize(dim);
-		JButton btnClose = new JButton("Close");
-		btnClose.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				closeDialog();
-				if (fEvalBrowser != null) {
-					fEvalBrowser.getFrame().setVisible(false);
-					fEvalBrowser.getFrame().dispose();
-				}
-			}
-		});
-		dim = btnClose.getMaximumSize();
-		dim.width = Short.MAX_VALUE;
-		btnClose.setMaximumSize(dim);
+		
+		JButton btnClear = getClearButton();
+		JButton btnClose = getCloseButton();
+		JButton complexityBtn = getComplexityButton();
+		JButton helpBtn = getHelpButton(parent);
 
 		btnPane.setLayout(new BoxLayout(btnPane, BoxLayout.Y_AXIS));
 		btnPane.add(Box.createVerticalGlue());
 		btnPane.add(btnEval);
+		btnPane.add(complexityBtn);
 		btnPane.add(Box.createRigidArea(new Dimension(0, 5)));
 		btnPane.add(Box.createRigidArea(new Dimension(0, 5)));
 		btnPane.add(btnClear);
 		btnPane.add(Box.createRigidArea(new Dimension(0, 5)));
+		btnPane.add(helpBtn);
 		btnPane.add(btnClose);
 		btnPane.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
@@ -225,6 +202,95 @@ class EvalOCLDialog extends JDialog {
 		fTextIn.addKeyListener(ekl);
 		fTextOut.addKeyListener(ekl);
 	}
+	
+	private JButton getClearButton() {
+		Dimension dim;
+		JButton btnClear = new JButton("Clear");
+		btnClear.setMnemonic('C');
+		btnClear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fTextOut.setText(null);
+				if (fEvalBrowser != null) {
+					fEvalBrowser.getFrame().setVisible(false);
+					fEvalBrowser.getFrame().dispose();
+				}
+
+				// Reset color
+				resetClassDiagramColor();
+			}
+
+		});
+		dim = btnClear.getMaximumSize();
+		dim.width = Short.MAX_VALUE;
+		btnClear.setMaximumSize(dim);
+		return btnClear;
+	}
+	
+	private JButton getCloseButton() {
+		Dimension dim;
+		JButton btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				closeDialog();
+				if (fEvalBrowser != null) {
+					fEvalBrowser.getFrame().setVisible(false);
+					fEvalBrowser.getFrame().dispose();
+				}
+			}
+		});
+		dim = btnClose.getMaximumSize();
+		dim.width = Short.MAX_VALUE;
+		btnClose.setMaximumSize(dim);
+		return btnClose;
+	}
+
+	private JButton getComplexityButton() {
+		Dimension dim;
+		JButton complexityBtn = new JButton("Evaluate OCL Complexity");
+		complexityBtn.setMnemonic('O');
+		complexityBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (fEvalBrowser != null && fEvalBrowser.getFrame().isVisible()) {
+					// if evaluation browser is already open, update it as well
+					boolean evalSuccess = evaluateOclComplexity(fTextIn.getText(), true);
+
+					if (evalSuccess) {
+						fEvalBrowser.updateEvalBrowser(evaluator.getEvalNodeRoot());
+					}
+				} else {
+					evaluateOclComplexity(fTextIn.getText(), false);
+				}
+			}
+		});
+		dim = complexityBtn.getMaximumSize();
+		dim.width = Short.MAX_VALUE;
+		complexityBtn.setMaximumSize(dim);
+		return complexityBtn;
+	}
+	
+	private JButton getHelpButton(JFrame parent) {
+		Dimension dim;
+		JButton btnClear = new JButton("Help: OCL Complexity");
+		btnClear.setMnemonic('H');
+		btnClear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(complexityDialog == null) {
+					complexityDialog = new OCLComplexityDialog(parent);
+				}
+				complexityDialog.setVisible(true);
+			}
+
+		});
+		dim = btnClear.getMaximumSize();
+		dim.width = Short.MAX_VALUE;
+		btnClear.setMaximumSize(dim);
+		return btnClear;
+	}
+	
 	
 	/**
 	 * Returns the session's system if available or an empty model.
@@ -401,6 +467,75 @@ class EvalOCLDialog extends JDialog {
 			}
 		}
 		return classDiagram;
+	}
+	
+	private boolean evaluateOclComplexity(String in, boolean evalTree) {
+		if (this.fSystem == null) {
+			fTextOut.setText("No system!");
+			return false;
+		}
+
+		// clear previous results
+		fTextOut.setText(null);
+
+		// send error output to result window and msg stream
+		StringWriter msgWriter = new StringWriter();
+		PrintWriter out = new PrintWriter(new TeeWriter(new TextComponentWriter(fTextOut), msgWriter), true);
+
+		// compile query
+		Expression expr = OCLCompiler.compileExpression(fSystem.model(), fSystem.state(), in, "Error", out,
+				fSystem.varBindings());
+
+		out.flush();
+		fTextIn.requestFocus();
+
+		// compile errors?
+		if (expr == null) {
+			// try to parse error message and set caret to error position
+			String msg = msgWriter.toString();
+			int colon1 = msg.indexOf(':');
+			if (colon1 != -1) {
+				int colon2 = msg.indexOf(':', colon1 + 1);
+				int colon3 = msg.indexOf(':', colon2 + 1);
+
+				try {
+					int line = Integer.parseInt(msg.substring(colon1 + 1, colon2));
+					int column = Integer.parseInt(msg.substring(colon2 + 1, colon3));
+					int caret = 1 + StringUtil.nthIndexOf(in, line - 1, Options.LINE_SEPARATOR);
+					caret += column;
+
+					// sanity check
+					caret = Math.min(caret, fTextIn.getText().length());
+					fTextIn.setCaretPosition(caret);
+				} catch (NumberFormatException ex) {
+				}
+			}
+			return false;
+		}
+
+		try {
+			// evaluate it with current system state
+			evaluator = new Evaluator(evalTree);
+
+			IComplexityMetric complexityMetric = new ComplexityMetric();
+			expr.processWithVisitor(new ExpressionComplexityVisitor(complexityMetric, true));
+			
+			// print result
+			fTextOut.setText(getOclComplexity(complexityMetric));
+
+			return true;
+		} catch (MultiplicityViolationException e) {
+			fTextOut.setText("Could not evaluate. " + e.getMessage());
+		}
+		return false;
+	}
+	
+	private String getOclComplexity(IComplexityMetric complexityMetric) {
+		IComplexityMetricResult result = complexityMetric.getWeight();
+		return String.format(
+				"NNR: %d | NAN: %d | WNO: %d | NNC: %d | WNM: %d | NPT: %d | NUCA: %d | NUCO: %d | WNN: %d | DN: %d | WCO: %d", 
+				result.getNNR(), result.getNAN(), result.getWNO(), result.getNNC(), result.getWNM(),
+				result.getNPT(), result.getNUCA(), result.getNUCO(), result.getWNN(), result.getDN(), result.getWCO());
 	}
 	
 }
