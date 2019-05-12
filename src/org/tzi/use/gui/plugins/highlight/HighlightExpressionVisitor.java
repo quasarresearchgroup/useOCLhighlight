@@ -84,9 +84,9 @@ import org.tzi.use.uml.ocl.type.Type;
  */
 public class HighlightExpressionVisitor implements ExpressionVisitor {
 
-	private static final Color CLASS_COLOR = new Color(68, 136, 214); // BLUE: 68, 136, 214; GREEN: 68, 136, 0
+	private static final Color CLASS_COLOR = new Color(68, 136, 214);
 	private static final Color ENUM_COLOR = CLASS_COLOR;
-	private static final Color ATTRIBUTE_COLOR = new Color(167, 202, 242); // BLUE: 167, 202, 242; GREEN: 167, 202, 3
+	private static final Color ATTRIBUTE_COLOR = new Color(167, 202, 242);
 	private static final Color OPERATION_COLOR = ATTRIBUTE_COLOR;
 	private static final Color ROLENAME_COLOR = ATTRIBUTE_COLOR;
 	private static final Color EDGE_COLOR = new Color(255, 132, 66);

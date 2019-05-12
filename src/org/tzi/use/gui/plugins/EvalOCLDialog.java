@@ -62,9 +62,8 @@ import org.tzi.use.util.StringUtil;
 import org.tzi.use.util.TeeWriter;
 
 /**
- * USE - UML based specification environment
- * Copyright (C) 1999-2004 Mark Richters, University of Bremen 
- * Original author: Mark Richters
+ * USE - UML based specification environment Copyright (C) 1999-2004 Mark
+ * Richters, University of Bremen Original author: Mark Richters
  * 
  * A dialog for entering and evaluating OCL expressions.
  * 
@@ -87,7 +86,7 @@ class EvalOCLDialog extends JDialog {
 	private List<ClassDiagramView> classDiagrams;
 
 	private OCLComplexityDialog complexityDialog;
-	
+
 	private final ChangeListener sessionChangeListener = new ChangeListener() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
@@ -168,7 +167,7 @@ class EvalOCLDialog extends JDialog {
 		Dimension dim = btnEval.getMaximumSize();
 		dim.width = Short.MAX_VALUE;
 		btnEval.setMaximumSize(dim);
-		
+
 		JButton btnClear = getClearButton();
 		JButton btnClose = getCloseButton();
 		JButton complexityBtn = getComplexityButton();
@@ -202,7 +201,7 @@ class EvalOCLDialog extends JDialog {
 		fTextIn.addKeyListener(ekl);
 		fTextOut.addKeyListener(ekl);
 	}
-	
+
 	private JButton getClearButton() {
 		Dimension dim;
 		JButton btnClear = new JButton("Clear");
@@ -226,7 +225,7 @@ class EvalOCLDialog extends JDialog {
 		btnClear.setMaximumSize(dim);
 		return btnClear;
 	}
-	
+
 	private JButton getCloseButton() {
 		Dimension dim;
 		JButton btnClose = new JButton("Close");
@@ -270,7 +269,7 @@ class EvalOCLDialog extends JDialog {
 		complexityBtn.setMaximumSize(dim);
 		return complexityBtn;
 	}
-	
+
 	private JButton getHelpButton(JFrame parent) {
 		Dimension dim;
 		JButton btnClear = new JButton("Help: OCL Complexity");
@@ -278,7 +277,7 @@ class EvalOCLDialog extends JDialog {
 		btnClear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(complexityDialog == null) {
+				if (complexityDialog == null) {
 					complexityDialog = new OCLComplexityDialog(parent);
 				}
 				complexityDialog.setVisible(true);
@@ -290,8 +289,7 @@ class EvalOCLDialog extends JDialog {
 		btnClear.setMaximumSize(dim);
 		return btnClear;
 	}
-	
-	
+
 	/**
 	 * Returns the session's system if available or an empty model.
 	 * 
@@ -329,7 +327,7 @@ class EvalOCLDialog extends JDialog {
 		// compile query
 		Expression expr = OCLCompiler.compileExpression(fSystem.model(), fSystem.state(), in, "Error", out,
 				fSystem.varBindings());
-		
+
 		// Reset color
 		resetClassDiagramColor();
 
@@ -382,7 +380,7 @@ class EvalOCLDialog extends JDialog {
 		if (classDiagram != null) {
 			ClassDiagramData visibleData = (ClassDiagramData) classDiagram.getVisibleData();
 			ClassDiagramData hiddenData = (ClassDiagramData) classDiagram.getHiddenData();
-			
+
 			visibleData.fClassToNodeMap.values().stream().forEach(this::resetClassNodeColor);
 			hiddenData.fClassToNodeMap.values().stream().forEach(this::resetClassNodeColor);
 			visibleData.getAllRolenames().stream().forEach(this::resetRolenameColor);
@@ -399,53 +397,53 @@ class EvalOCLDialog extends JDialog {
 			classDiagram.repaint();
 		}
 	}
-	
+
 	private void resetClassNodeColor(ClassNode node) {
 		node.setColor(null);
 		node.resetAttributeColor();
 		node.resetOperationColor();
 	}
-	
+
 	private void resetRolenameColor(Rolename rolename) {
 		rolename.setColor(null);
 	}
-	
+
 	private void resetEnumNodeColor(EnumNode enumNode) {
 		try {
 			Field fOptField = ClassifierNode.class.getDeclaredField("fOpt");
 			fOptField.setAccessible(true);
-			Method method = DiagramOptions.class.getMethod("registerTypeColor", String.class, Color.class,
-					Color.class);
+			Method method = DiagramOptions.class.getMethod("registerTypeColor", String.class, Color.class, Color.class);
 			DiagramOptions fOpt = (DiagramOptions) fOptField.get(enumNode);
 			Color color = new Color(0xff, 0xf8, 0xb4);
 			method.invoke(fOpt, "NODE_COLOR", color, color);
-		} catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+		} catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e1) {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	private void resetEdgeColor(EdgeBase edge) {
 		try {
 			Field fOptField = EdgeBase.class.getDeclaredField("fOpt");
 			fOptField.setAccessible(true);
-			
+
 			DiagramOptions fOpt = (DiagramOptions) fOptField.get(edge);
 			fOpt.registerTypeColor("EDGE_COLOR", Color.BLACK, Color.BLACK);
 			fOptField.set(edge, fOpt);
-			
-			if(edge instanceof BinaryAssociationClassOrObject) {
-				Field associationClassEdgeField = BinaryAssociationClassOrObject.class.getDeclaredField("associationClassEdge");
+
+			if (edge instanceof BinaryAssociationClassOrObject) {
+				Field associationClassEdgeField = BinaryAssociationClassOrObject.class
+						.getDeclaredField("associationClassEdge");
 				associationClassEdgeField.setAccessible(true);
-				
+
 				SimpleEdge simpleEdge = (SimpleEdge) associationClassEdgeField.get(edge);
 				simpleEdge.setColor(Color.BLACK);
 			}
-		} catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void paintClassDiagram(Expression expr) {
 		ClassDiagram classDiagram = getClassDiagram();
 		if (expr != null && classDiagram != null) {
@@ -453,22 +451,22 @@ class EvalOCLDialog extends JDialog {
 			classDiagram.repaint();
 		}
 	}
-	
+
 	private ClassDiagram getClassDiagram() {
 		ClassDiagram classDiagram = null;
 		if (!classDiagrams.isEmpty()) {
 			try {
-				Class<?> classDiagramViewCls =  classDiagrams.get(0).getClass();
+				Class<?> classDiagramViewCls = classDiagrams.get(0).getClass();
 				Field field = classDiagramViewCls.getDeclaredField("fClassDiagram");
 				field.setAccessible(true);
-				classDiagram = (ClassDiagram) field.get(classDiagrams.get(classDiagrams.size()-1));
-			} catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException  e1) {
+				classDiagram = (ClassDiagram) field.get(classDiagrams.get(classDiagrams.size() - 1));
+			} catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException e1) {
 				e1.printStackTrace();
 			}
 		}
 		return classDiagram;
 	}
-	
+
 	private boolean evaluateOclComplexity(String in, boolean evalTree) {
 		if (this.fSystem == null) {
 			fTextOut.setText("No system!");
@@ -519,7 +517,7 @@ class EvalOCLDialog extends JDialog {
 
 			IComplexityMetric complexityMetric = new ComplexityMetric();
 			expr.processWithVisitor(new ExpressionComplexityVisitor(complexityMetric, true));
-			
+
 			// print result
 			fTextOut.setText(getOclComplexity(complexityMetric));
 
@@ -529,13 +527,12 @@ class EvalOCLDialog extends JDialog {
 		}
 		return false;
 	}
-	
+
 	private String getOclComplexity(IComplexityMetric complexityMetric) {
 		IComplexityMetricResult result = complexityMetric.getWeight();
-		return String.format(
-				"NNR: %d | NAN: %d | WNO: %d | NNC: %d | WNM: %d | NPT: %d | NUCA: %d | NUCO: %d | WNN: %d | DN: %d | WCO: %d", 
-				result.getNNR(), result.getNAN(), result.getWNO(), result.getNNC(), result.getWNM(),
-				result.getNPT(), result.getNUCA(), result.getNUCO(), result.getWNN(), result.getDN(), result.getWCO());
+		return String.format("NNR: %d | NAN: %d | WNO: %d | NNC: %d | NUCA: %d | NUCO: %d | WNN: %d | DN: %d | WCO: %d",
+				result.getNNR(), result.getNAN(), result.getWNO(), result.getNNC(), result.getNUCA(), result.getNUCO(),
+				result.getWNN(), result.getDN(), result.getWCO());
 	}
-	
+
 }

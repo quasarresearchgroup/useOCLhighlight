@@ -3,10 +3,7 @@ package org.tzi.use.gui.plugins.complexity;
 import org.tzi.use.uml.mm.MAttribute;
 import org.tzi.use.uml.mm.MNavigableElement;
 import org.tzi.use.uml.ocl.expr.ExpAllInstances;
-import org.tzi.use.uml.ocl.expr.ExpCollect;
 import org.tzi.use.uml.ocl.expr.ExpObjOp;
-import org.tzi.use.uml.ocl.expr.ExpQuery;
-import org.tzi.use.uml.ocl.expr.ExpSelect;
 import org.tzi.use.uml.ocl.expr.ExpVariable;
 
 public interface IComplexityMetric {
@@ -16,9 +13,11 @@ public interface IComplexityMetric {
 	void insertOperation(String operationName);
 
 	void startCollectionOperation();
+
 	void stopCollectionOperation();
 
 	void insertNavigation(MNavigableElement source, MNavigableElement target);
+
 	void insertNavigation(MNavigableElement target);
 
 	void insertVariable(ExpVariable expression);
@@ -29,5 +28,4 @@ public interface IComplexityMetric {
 
 	void insertObjectOperation(ExpObjOp exp);
 
-	
 }

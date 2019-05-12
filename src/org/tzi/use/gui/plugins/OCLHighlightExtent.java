@@ -8,9 +8,9 @@ import org.tzi.use.runtime.gui.IPluginAction;
 import org.tzi.use.runtime.gui.IPluginActionDelegate;
 
 /**
- * This is the Plugin Action class. It provides the Action
- * which will be performed if the corresponding Plugin Action Delegate in the
- * application is called.
+ * This is the Plugin Action class. It provides the Action which will be
+ * performed if the corresponding Plugin Action Delegate in the application is
+ * called.
  * 
  * @author Maria Sales
  */
@@ -19,26 +19,21 @@ public class OCLHighlightExtent implements IPluginActionDelegate {
 	public OCLHighlightExtent() {
 	}
 
-	/**
-	 * This is the Action Method called from the Action Proxy
-	 */
 	public void performAction(IPluginAction pluginAction) {
-		if(!pluginAction.getSession().hasSystem()){
-			JOptionPane.showMessageDialog(
-							pluginAction.getParent(),
-							"No model loaded. Please load a model first.",
-							"No Model", JOptionPane.ERROR_MESSAGE);
+		if (!pluginAction.getSession().hasSystem()) {
+			JOptionPane.showMessageDialog(pluginAction.getParent(), "No model loaded. Please load a model first.",
+					"No Model", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		
+
 		// Getting Session object from Proxy
 		Session session = pluginAction.getSession();
-        
+
 		// Getting MainWindow object from Proxy
 		final MainWindow mainWindow = pluginAction.getParent();
-		
+
 		// Open EvalOCLDialog
-        EvalOCLDialog dlg = new EvalOCLDialog(session, mainWindow, mainWindow.getClassDiagrams());
-        dlg.setVisible(true);
+		EvalOCLDialog dlg = new EvalOCLDialog(session, mainWindow, mainWindow.getClassDiagrams());
+		dlg.setVisible(true);
 	}
 }

@@ -1,16 +1,8 @@
 package org.tzi.use.gui.plugins.complexity;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
-import org.tzi.use.analysis.metrics.AbstractMetricVisitor;
-import org.tzi.use.uml.mm.MAssociation;
-import org.tzi.use.uml.mm.MClass;
-import org.tzi.use.uml.mm.MClassImpl;
 import org.tzi.use.uml.mm.MOperation;
 import org.tzi.use.uml.ocl.expr.ExpAllInstances;
 import org.tzi.use.uml.ocl.expr.ExpAny;
@@ -64,38 +56,32 @@ import org.tzi.use.uml.ocl.expr.ExpressionVisitor;
 import org.tzi.use.uml.ocl.expr.ExpressionWithValue;
 import org.tzi.use.uml.ocl.expr.VarDecl;
 import org.tzi.use.uml.ocl.expr.VarDeclList;
-import org.tzi.use.uml.ocl.expr.VarInitializer;
-import org.tzi.use.uml.ocl.type.Type.VoidHandling;
 
 import com.google.common.collect.Lists;
 
 public class ExpressionComplexityVisitor implements ExpressionVisitor {
-	
-	private HashMap<String, Stack<Expression>> stackMap = new HashMap<String, Stack<Expression>>();
+
+	private Stack<MOperation> operationStack = new Stack<MOperation>();
 	private IComplexityMetric metric;
 	private boolean expandOperations;
-	
+
 	public ExpressionComplexityVisitor(IComplexityMetric metric, boolean expandOperations) {
 		this.metric = metric;
 		this.expandOperations = expandOperations;
 	}
-	
+
 	public void visitAllInstances(ExpAllInstances exp) {
 		System.out.println("visitAllInstances: " + exp);
 		metric.insertAllInstances(exp);
-//		visitExpression(exp);
-//		popFromStack(exp);
 	}
-	
+
 	public void visitAny(ExpAny exp) {
 		System.out.println("visitAny: " + exp);
 		visitCollectionOperation(exp);
 	}
-	
+
 	public void visitAsType(ExpAsType exp) {
 		System.out.println("visitAsType: " + exp);
-//		visitExpression(exp);
-//		popFromStack(exp);
 	}
 
 	public void visitAttrOp(ExpAttrOp exp) {
@@ -108,21 +94,17 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 		System.out.println("visitBagLiteral: " + exp);
 		visitCollectionLiteral(exp);
 	}
-	
+
 	public void visitCollect(ExpCollect exp) {
 		System.out.println("visitCollect: " + exp);
 		visitCollectionOperation(exp);
-//		metric.insertCollect(exp);
-//		visitExpression(exp);
-//		visitQuery(exp);
-//		popFromStack(exp);
 	}
-	
+
 	public void visitCollectNested(ExpCollectNested exp) {
 		System.out.println("visitCollectNested: " + exp);
 		visitCollectionOperation(exp);
 	}
-	
+
 	public void visitConstBoolean(ExpConstBoolean exp) {
 		System.out.println("visitConstBoolean: " + exp);
 	}
@@ -151,12 +133,12 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 		System.out.println("visitExists: " + exp);
 		visitCollectionOperation(exp);
 	}
-	
+
 	public void visitForAll(ExpForAll exp) {
 		System.out.println("visitForAll: " + exp);
 		visitCollectionOperation(exp);
 	}
-	
+
 	public void visitIf(ExpIf exp) {
 		System.out.println("visitIf: " + exp);
 		exp.getCondition().processWithVisitor(this);
@@ -178,14 +160,12 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 		System.out.println("visitIsUnique: " + exp);
 		visitQuery(exp);
 	}
-	
+
 	public void visitIterate(ExpIterate exp) {
 		System.out.println("visitIterate: " + exp);
-//		visitExpression(exp);
 		visitQuery(exp);
-//		popFromStack(exp);
 	}
-	
+
 	public void visitLet(ExpLet exp) {
 		System.out.println("visitLet: " + exp);
 		exp.getVarExpression().processWithVisitor(this);
@@ -209,18 +189,15 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 		exp.getObjectExpression().processWithVisitor(this);
 	}
 
-	private Stack<MOperation> operationStack = new Stack<MOperation>();
-
 	public void visitObjOp(ExpObjOp exp) {
 		System.out.println("visitObjOp: " + exp);
 		metric.insertObjectOperation(exp);
-		
+
 		for (Expression ex : exp.getArguments()) {
 			ex.processWithVisitor(this);
 		}
 
-		if (expandOperations && exp.getOperation().hasExpression()
-				&& !operationStack.contains(exp.getOperation())) {
+		if (expandOperations && exp.getOperation().hasExpression() && !operationStack.contains(exp.getOperation())) {
 			operationStack.push(exp.getOperation());
 			exp.getOperation().expression().processWithVisitor(this);
 			operationStack.pop();
@@ -231,14 +208,12 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 		System.out.println("visitObjRef: " + exp);
 		exp.processWithVisitor(this);
 	}
-	
+
 	public void visitOne(ExpOne exp) {
 		System.out.println("visitOne: " + exp);
-//		visitExpression(exp);
 		visitQuery(exp);
-//		popFromStack(exp);
 	}
-	
+
 	public void visitOrderedSetLiteral(ExpOrderedSetLiteral exp) {
 		System.out.println("visitOrderedSetLiteral: " + exp);
 		visitCollectionLiteral(exp);
@@ -249,39 +224,37 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 		exp.getRangeExpression().processWithVisitor(this);
 		exp.getQueryExpression().processWithVisitor(this);
 	}
-	
+
 	public void visitReject(ExpReject exp) {
 		System.out.println("visitReject: " + exp);
-//		visitExpression(exp);
 		visitQuery(exp);
-//		popFromStack(exp);
 	}
-	
+
 	public void visitWithValue(ExpressionWithValue exp) {
 		System.out.println("visitWithValue: " + exp);
 	}
-	
+
 	public void visitSelect(ExpSelect exp) {
 		System.out.println("visitSelect: " + exp);
 		visitCollectionOperation(exp);
 	}
-	
+
 	private void visitCollectionOperation(ExpQuery exp) {
 		metric.startCollectionOperation();
 		exp.getQueryExpression().processWithVisitor(this);
 		metric.stopCollectionOperation();
 		exp.getRangeExpression().processWithVisitor(this);
 	}
-	
+
 	private void visitCollectionOperation(ExpStdOp exp) {
 		metric.startCollectionOperation();
 		Expression[] args = exp.args();
-		if(args.length == 0){
+		if (args.length == 0) {
 		} else {
 			args[0].processWithVisitor(this);
-			if(args.length > 1){
-				for(int i = 1; i < args.length; i++){
-					if(i > 1){
+			if (args.length > 1) {
+				for (int i = 1; i < args.length; i++) {
+					if (i > 1) {
 					}
 					args[i].processWithVisitor(this);
 				}
@@ -289,7 +262,7 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 		}
 		metric.stopCollectionOperation();
 	}
-	
+
 	public void visitSequenceLiteral(ExpSequenceLiteral exp) {
 		System.out.println("visitSequenceLiteral: " + exp);
 		visitCollectionLiteral(exp);
@@ -299,22 +272,20 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 		System.out.println("visitSetLiteral: " + exp);
 		visitCollectionLiteral(exp);
 	}
-	
+
 	public void visitSortedBy(ExpSortedBy exp) {
 		System.out.println("visitSortedBy: " + exp);
-//		visitExpression(exp);
 		visitQuery(exp);
-//		popFromStack(exp);
 	}
-	
+
 	public void visitStdOp(ExpStdOp exp) {
 		Expression[] args = exp.args();
 		String operationName;
-		
-		if(exp.getOperation().isInfixOrPrefix()){
+
+		if (exp.getOperation().isInfixOrPrefix()) {
 			operationName = exp.opname();
 			metric.insertOperation(operationName);
-			if(args.length == 1){
+			if (args.length == 1) {
 				args[0].processWithVisitor(this);
 			} else { // Infix has two arguments
 				args[0].processWithVisitor(this);
@@ -322,33 +293,33 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 			}
 		} else {
 			operationName = exp.opname();
-			if(exp.isPre()){
+			if (exp.isPre()) {
 				operationName += "@pre";
 			}
-			
-			List<String> collectionOperation = Lists.newArrayList("size", "asSet", "sum", "notEmpty", "isEmpty", "intersection", "union", "includes",
-					"count", "at");
-			if(collectionOperation.contains(operationName)) { // is collection operation?
+
+			List<String> collectionOperation = Lists.newArrayList("size", "asSet", "sum", "notEmpty", "isEmpty",
+					"intersection", "union", "includes", "count", "at");
+			if (collectionOperation.contains(operationName)) { // is collection operation?
 				visitCollectionOperation(exp);
 			} else {
 				metric.insertOperation(operationName);
-				
-				if(args.length == 0){
+
+				if (args.length == 0) {
 				} else {
 					args[0].processWithVisitor(this);
-					if(args.length > 1){
-						for(int i = 1; i < args.length; i++){
-							if(i > 1){
+					if (args.length > 1) {
+						for (int i = 1; i < args.length; i++) {
+							if (i > 1) {
 							}
 							args[i].processWithVisitor(this);
 						}
 					}
 				}
 			}
-			
+
 		}
 	}
-	
+
 	public void visitTupleLiteral(ExpTupleLiteral exp) {
 		for (ExpTupleLiteral.Part part : exp.getParts()) {
 			part.getExpression().processWithVisitor(this);
@@ -397,8 +368,7 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 		expObjectByUseId.getIdExpression().processWithVisitor(this);
 	}
 
-	public void visitConstUnlimitedNatural(
-			ExpConstUnlimitedNatural expressionConstUnlimitedNatural) {
+	public void visitConstUnlimitedNatural(ExpConstUnlimitedNatural expressionConstUnlimitedNatural) {
 		System.out.println("visitConstUnlimitedNatural");
 	}
 
@@ -414,31 +384,5 @@ public class ExpressionComplexityVisitor implements ExpressionVisitor {
 		exp.getStart().processWithVisitor(this);
 		exp.getEnd().processWithVisitor(this);
 	}
-	
-	/** private section **/
-	
-	private String pushToStack(Expression expression) {
-		String stackKey = expression.getClass().getName(); 
-		Stack<Expression> stack = stackMap.get(stackKey);
-
-		if(stack == null) {
-			stack = new Stack<Expression>();
-			stackMap.put(stackKey, stack);
-		}
-
-		stackMap.get(stackKey).push(expression);
-
-		return stackKey;
-	}
-
-//	private void popFromStack(Expression expression) {
-//		String stackKey = expression.getClass().getName();
-//		stackMap.get(stackKey).pop();
-//	}
-
-//	private void visitExpression(Expression expression) {
-//		String stackKey = pushToStack(expression);
-//		metric.pushSingleShot(expression, new ArrayList<Expression>(stackMap.get(stackKey)));
-//	}
 
 }
