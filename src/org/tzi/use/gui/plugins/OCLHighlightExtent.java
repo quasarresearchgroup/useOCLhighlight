@@ -3,6 +3,7 @@ package org.tzi.use.gui.plugins;
 import javax.swing.JOptionPane;
 
 import org.tzi.use.gui.main.MainWindow;
+import org.tzi.use.gui.plugins.highlight.EvalOCLDialog;
 import org.tzi.use.main.Session;
 import org.tzi.use.runtime.gui.IPluginAction;
 import org.tzi.use.runtime.gui.IPluginActionDelegate;

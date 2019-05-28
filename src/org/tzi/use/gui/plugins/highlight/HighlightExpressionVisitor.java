@@ -84,17 +84,12 @@ import org.tzi.use.uml.ocl.type.Type;
  */
 public class HighlightExpressionVisitor implements ExpressionVisitor {
 
-	private static final Color CLASS_COLOR = new Color(68, 136, 214);
-	private static final Color ENUM_COLOR = CLASS_COLOR;
-	private static final Color ATTRIBUTE_COLOR = new Color(167, 202, 242);
-	private static final Color OPERATION_COLOR = ATTRIBUTE_COLOR;
-	private static final Color ROLENAME_COLOR = ATTRIBUTE_COLOR;
-	private static final Color EDGE_COLOR = new Color(255, 132, 66);
-
 	private ClassDiagramData classDiagramData;
+	private OCLHighlightConfigDialog configDialog;
 
-	public HighlightExpressionVisitor(ClassDiagramData classDiagramData) {
+	public HighlightExpressionVisitor(ClassDiagramData classDiagramData, OCLHighlightConfigDialog configDialog) {
 		this.classDiagramData = classDiagramData;
+		this.configDialog = configDialog;
 		resetDiagramColor();
 	}
 
@@ -145,8 +140,8 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 
 	private void colorizeClass(MClass visitedClass) {
 		ClassNode classNode = classDiagramData.fClassToNodeMap.get(visitedClass);
-		if (!classNode.getColor().equals(CLASS_COLOR)) {
-			classNode.setColor(CLASS_COLOR);
+		if (!classNode.getColor().equals(configDialog.getClassColor())) {
+			classNode.setColor(configDialog.getClassColor());
 			visitedClass.attributes().forEach(attribute -> {
 				try {
 
@@ -160,7 +155,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 					@SuppressWarnings("unchecked")
 					List<MAttribute> fAttributes = (List<MAttribute>) fAttributesField.get(classNode);
 
-					if (fAttrColors[fAttributes.indexOf(attribute)] != ATTRIBUTE_COLOR) {
+					if (fAttrColors[fAttributes.indexOf(attribute)] != configDialog.getAttributeColor()) {
 						classNode.setAttributeColor(attribute, Color.WHITE);
 					}
 
@@ -182,7 +177,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 					@SuppressWarnings("unchecked")
 					List<MOperation> fOperations = (List<MOperation>) fOperationsField.get(classNode);
 
-					if (fOperationColors[fOperations.indexOf(operation)] != ATTRIBUTE_COLOR) {
+					if (fOperationColors[fOperations.indexOf(operation)] != configDialog.getAttributeColor()) {
 						classNode.setOperationColor(operation, Color.WHITE);
 					}
 
@@ -248,7 +243,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 				fOptField.setAccessible(true);
 
 				ClassDiagramOptions newOptions = clone((ClassDiagramOptions) fOptField.get(edgeBase));
-				newOptions.registerTypeColor(DiagramOptions.EDGE_COLOR, EDGE_COLOR, EDGE_COLOR);
+				newOptions.registerTypeColor(DiagramOptions.EDGE_COLOR, configDialog.getEdgeColor(), configDialog.getEdgeColor());
 				fOptField.set(edgeBase, newOptions);
 
 			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
@@ -267,7 +262,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 
 	private void colorizeAttribute(MAttribute visitedAttribute) {
 		classDiagramData.fClassToNodeMap.get(visitedAttribute.owner()).setAttributeColor(visitedAttribute,
-				ATTRIBUTE_COLOR);
+				configDialog.getAttributeColor());
 	}
 
 	@Override
@@ -293,7 +288,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 	@Override
 	public void visitConstEnum(ExpConstEnum exp) {
 		if (exp.type().isTypeOfEnum()) {
-			colorizeEnumType((EnumType) exp.type(), ENUM_COLOR);
+			colorizeEnumType((EnumType) exp.type(), configDialog.getEnumColor());
 		}
 	}
 
@@ -437,7 +432,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 				.filter(role -> role.getAssociation().name().equals(associationName)).findFirst();
 
 		if (classDiagramRolename.isPresent()) {
-			classDiagramRolename.get().setColor(ROLENAME_COLOR);
+			classDiagramRolename.get().setColor(configDialog.getRolenameColor());
 		}
 	}
 
@@ -477,7 +472,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 				fOptField.setAccessible(true);
 
 				ClassDiagramOptions newOptions = clone((ClassDiagramOptions) fOptField.get(edgeBase));
-				newOptions.registerTypeColor(DiagramOptions.EDGE_COLOR, EDGE_COLOR, EDGE_COLOR);
+				newOptions.registerTypeColor(DiagramOptions.EDGE_COLOR, configDialog.getEdgeColor(), configDialog.getEdgeColor());
 				fOptField.set(edgeBase, newOptions);
 
 				if (edgeBase instanceof BinaryAssociationClassOrObject && associationMatches(sourceClass,
@@ -487,7 +482,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 					associationClassEdgeField.setAccessible(true);
 
 					SimpleEdge simpleEdge = (SimpleEdge) associationClassEdgeField.get(edgeBase);
-					simpleEdge.setColor(EDGE_COLOR);
+					simpleEdge.setColor(configDialog.getEdgeColor());
 
 				}
 			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
@@ -567,7 +562,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 
 	private void colorizeOperation(MClass visitedOperationClass, MOperation visitedOperation) {
 		classDiagramData.fClassToNodeMap.get(visitedOperationClass).setOperationColor(visitedOperation,
-				OPERATION_COLOR);
+				configDialog.getOperationColor());
 	}
 
 	@Override
