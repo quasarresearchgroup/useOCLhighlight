@@ -32,7 +32,7 @@ To configure highlight colors simply click on 'Config' to open the configuration
 
 ### Calculate complexity
 1. Repeat steps 1-3 from the previous section (class diagram view is not necessary).
-2. Input the OCL expression on 'Enter OCL expression:' text box and click on 'Evaluate OCL Complexity'. Results are shown in the large text area in the bottom of the view.
+2. Input the OCL expression on 'Enter OCL expression:' text box and click on 'Evaluate OCL Complexity'. Results are shown in the large text area at the bottom of the view.
 5. Click on 'Clear' to reset the results, or simply input a new OCL expression.
 
 Click on 'Help: OCL Complexity' to explore OCL metrics definitions.
