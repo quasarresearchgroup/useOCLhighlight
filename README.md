@@ -7,8 +7,8 @@ The Unified Modeling Language (UML) [1] was created by the Object Management Gro
 
 Several support tools have been developed to assist in model-driven development, including the analysis and design phases where modelers need to interpret and write OCL expressions. These tools have their specific characteristics and provide a variety of useful functionalities including syntactic analysis, connection with the UML model, and debugging [6]. To the best of our knowledge, none of these tools provides syntax highlighting in the UML diagram for manually introduced OCL expressions, which we believe that could soften the learning curve for this language by reducing the mental burden when reading, analyzing and writing expressions.
 
-The OCL Highlight Plugin, which was developed in Java, provides a new OCL evaluation dialog that offers syntax highlighting in the
-UML model when users evaluate a given OCL expression. The last version of this plugin also includes a ‘Config’ button, where the user can configure different colors for the highlight, and an action button to evaluate the complexity of OCL expressions (using metrics defined by Reynoso et al [7]).
+OCL Highlight, which was developed in Java, is a plugin for the USE tool [7] (from Bremen University) provides a new OCL evaluation dialog that offers syntax highlighting in the
+UML model when users evaluate a given OCL expression. The last version of this plugin also includes a ‘Config’ button, where the user can configure different colors for the highlight, and an action button to evaluate the complexity of OCL expressions (using metrics defined by Reynoso et al [8]).
 
 ## Notes (version 1.2)
 ### Installation
@@ -17,17 +17,33 @@ Put the OclHighlight-1.2.jar file in your use-x.x.x/plugins folder.
 Run USE. A button with a red marker will appear on the plugins section.
 
 ### Requirements
-Make sure you have USE installed.
+Install USE: https://sourceforge.net/projects/useocl/.
 
 ## How to use
 
+### Highlight expression
+1. Open xxx.use with the model specification and instantiate it with objects and links (xxx.soil, or manually).
+2. Click on 'Create class diagram view' to open the respective class diagram.  
+3. Click on 'Highlight Expression' button to open the evaluation dialog (red marker icon). 
+4. Input the OCL expression on 'Enter OCL expression:' text box and click on 'Evaluate'. The elements that are present in the given expression will be automatically highlighted, while the rest of the diagram will be de-emphasized.
+5. Click on 'Clear' to reset the class diagram view, or simply input a new OCL expression.
+
+To configure highlight colors simply click on 'Config' to open the configuration dialog.
+
+### Calculate complexity
+1. Repeat steps 1-3 from the previous section (class diagram view is not necessary).
+2. Input the OCL expression on 'Enter OCL expression:' text box and click on 'Evaluate OCL Complexity'. Results are shown in the large text area in the bottom of the view.
+5. Click on 'Clear' to reset the results, or simply input a new OCL expression.
+
+Click on 'Help: OCL Complexity' to explore OCL metrics definitions.
 
 ## Bibliography
-* [1] Object Management Group. What is UML | Unified Modeling Language, 2005. Available: http://www.uml.org/what-is-uml.html.
+* [1] Object Management Group. What is UML: Unified Modeling Language, 2005. Available: http://www.uml.org/what-is-uml.html.
 * [2] Object Management Group (OMG). OMG - Object Management
 Group, 2017. Available: http://www.omg.org/.
 * [3] Object Constraint Language, version 2.4. Tech. Rep. February, 2014.
 * [4] Briand, L. C., Labiche, Y., Di Penta, M., and Yan-Bondoc, H. An experimental investigation of formality in UML-based development. IEEE Transactions on Software Engineering (2005).
 * [5] Briand, L. C., Labiche, Y., Yan, H. D., and Di Penta, M. A controlled experiment on the impact of the object constraint language in UML-based maintenance. In IEEE International Conference on Software Maintenance, ICSM (2004), pp. 380–389.
 * [6] Toval, A., Requena, V., and Fernández, J. L. Emerging OCL tools. Software and Systems Modeling 2, 4 (dec 2003), 248–261.
-* [7] Reynoso, L., Genero, M., and Piattini, M. Measuring Ocl Expressions: an Approach Based on Cognitive Techniques. In Metrics for Software Conceptual Models. Imperial College Press, Distributed by World Scientific Publishing Co., jan 2005, pp. 161–206.
+* [7] USE: The UML-based Specification Environment. Available: https:// sourceforge.net/p/useocl/wiki/.
+* [8] Reynoso, L., Genero, M., and Piattini, M. Measuring Ocl Expressions: an Approach Based on Cognitive Techniques. In Metrics for Software Conceptual Models. Imperial College Press, Distributed by World Scientific Publishing Co., jan 2005, pp. 161–206.
