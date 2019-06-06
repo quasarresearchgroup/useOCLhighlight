@@ -12,7 +12,7 @@ UML model when users evaluate a given OCL expression. The last version of this p
 
 ## Notes (version 1.2)
 ### Installation
-Put the OclHighlight-1.2.jar file in your use-x.x.x/plugins folder.
+Put the OclHighlight-1.2.jar file (<a href="OclHighlight-1.2.jar">Download Jar</a>) in your use-x.x.x/plugins folder.
 
 Run USE. A button with a red marker will appear on the plugins section.
 
