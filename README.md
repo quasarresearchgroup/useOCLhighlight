@@ -10,6 +10,9 @@ Several support tools have been developed to assist in model-driven development,
 OCL Highlight, which was developed in Java, is a plugin for the USE tool [7] (from Bremen University) provides a new OCL evaluation dialog that offers syntax highlighting in the
 UML model when users evaluate a given OCL expression. The last version of this plugin also includes a ‘Config’ button, where the user can configure different colors for the highlight, and an action button to evaluate the complexity of OCL expressions (using metrics defined by Reynoso et al [8]).
 
+## Demo
+Is available <a href="https://youtu.be/ZVBQ7O5BFi8">here</a> and it takes less than 5 minutes to see!
+
 ## Notes (version 1.2)
 ### Installation
 Put the OclHighlight-1.2.jar file (<a href="OclHighlight-1.2.jar">Download Jar</a>) in your use-x.x.x/plugins folder.
@@ -17,7 +20,7 @@ Put the OclHighlight-1.2.jar file (<a href="OclHighlight-1.2.jar">Download Jar</
 Run USE. A button with a red marker will appear on the plugins section.
 
 ### Requirements
-Install USE: https://sourceforge.net/projects/useocl/.
+Install USE: get an instalable version from Sourceforge <a href="https://sourceforge.net/projects/useocl/">here</a>.
 
 ## How to use
 
