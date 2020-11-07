@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.3" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="org.quasar.use.gui.plugins.OCLHighlightExtent" project="UseHighlightPlugin" 
+    file="/UseHighlightPlugin/src/org/quasar/use/gui/plugins/OCLHighlightExtent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="101" width="205" x="468" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="org.quasar.use.gui.plugins.OCLHighlightPlugin" project="UseHighlightPlugin" 
+    file="/UseHighlightPlugin/src/org/quasar/use/gui/plugins/OCLHighlightPlugin.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="137" width="159" x="45" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="org.quasar.use.gui.plugins.highlight.HighlightExpressionVisitor" 
+    project="UseHighlightPlugin" 
+    file="/UseHighlightPlugin/src/org/quasar/use/gui/plugins/highlight/HighlightExpressionVisitor.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="1325" width="499" x="1926" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="org.quasar.use.gui.plugins.highlight.OCLHighlightConfigDialog" 
+    project="UseHighlightPlugin" 
+    file="/UseHighlightPlugin/src/org/quasar/use/gui/plugins/highlight/OCLHighlightConfigDialog.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="461" width="363" x="1809" y="1402"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="org.quasar.use.gui.plugins.highlight.EvalOCLDialog" project="UseHighlightPlugin" 
+    file="/UseHighlightPlugin/src/org/quasar/use/gui/plugins/highlight/EvalOCLDialog.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="569" width="340" x="1546" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="6">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="7" name="configDialog">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="8" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="9">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="10" name="configDialog">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="11" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

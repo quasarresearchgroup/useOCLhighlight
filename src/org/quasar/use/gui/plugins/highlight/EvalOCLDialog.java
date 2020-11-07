@@ -1,4 +1,4 @@
-package org.tzi.use.gui.plugins.highlight;
+package org.quasar.use.gui.plugins.highlight;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,11 +28,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.tzi.use.config.Options;
-import org.tzi.use.gui.plugins.complexity.ComplexityMetric;
-import org.tzi.use.gui.plugins.complexity.ExpressionComplexityVisitor;
-import org.tzi.use.gui.plugins.complexity.IComplexityMetric;
-import org.tzi.use.gui.plugins.complexity.IComplexityMetricResult;
-import org.tzi.use.gui.plugins.complexity.OCLComplexityHelpDialog;
 import org.tzi.use.gui.util.CloseOnEscapeKeyListener;
 import org.tzi.use.gui.util.TextComponentWriter;
 import org.tzi.use.gui.views.diagrams.DiagramOptions;
@@ -77,13 +72,11 @@ public class EvalOCLDialog extends JDialog {
 	private final JTextArea fTextIn;
 	private final JTextArea fTextOut;
 
-	private ExprEvalBrowser fEvalBrowser;
 	private Evaluator evaluator;
 	private final JButton btnEval;
 
 	private List<ClassDiagramView> classDiagrams;
 
-	private OCLComplexityHelpDialog complexityHelpDialog;
 	private OCLHighlightConfigDialog configDialog;
 	
 	private final ChangeListener sessionChangeListener = new ChangeListener() {
@@ -149,19 +142,15 @@ public class EvalOCLDialog extends JDialog {
 		btnEval = getEvaluateButton();
 		JButton btnClear = getClearButton();
 		JButton btnClose = getCloseButton();
-		JButton complexityBtn = getComplexityButton();
-		JButton helpBtn = getHelpButton(parent);
 		JButton configBtn = getSetupButton(parent);
 		
 		btnPane.setLayout(new BoxLayout(btnPane, BoxLayout.Y_AXIS));
 		btnPane.add(Box.createVerticalGlue());
 		btnPane.add(btnEval);
-		btnPane.add(complexityBtn);
 		btnPane.add(Box.createRigidArea(new Dimension(0, 5)));
 		btnPane.add(Box.createRigidArea(new Dimension(0, 5)));
 		btnPane.add(btnClear);
 		btnPane.add(Box.createRigidArea(new Dimension(0, 5)));
-		btnPane.add(helpBtn);
 		btnPane.add(configBtn);
 		btnPane.add(btnClose);
 		btnPane.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -186,16 +175,8 @@ public class EvalOCLDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				getRootPane().setDefaultButton(btnEval);
-				if (fEvalBrowser != null && fEvalBrowser.getFrame().isVisible()) {
-					// if evaluation browser is already open, update it as well
-					boolean evalSuccess = evaluate(fTextIn.getText(), true);
-
-					if (evalSuccess) {
-						fEvalBrowser.updateEvalBrowser(evaluator.getEvalNodeRoot());
-					}
-				} else {
-					evaluate(fTextIn.getText(), false);
-				}
+				evaluate(fTextIn.getText(), false);
+				
 			}
 		});
 		Dimension dim = btnEval.getMaximumSize();
@@ -212,11 +193,6 @@ public class EvalOCLDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fTextOut.setText(null);
-				if (fEvalBrowser != null) {
-					fEvalBrowser.getFrame().setVisible(false);
-					fEvalBrowser.getFrame().dispose();
-				}
-
 				// Reset color
 				resetClassDiagramColor();
 			}
@@ -235,10 +211,6 @@ public class EvalOCLDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				closeDialog();
-				if (fEvalBrowser != null) {
-					fEvalBrowser.getFrame().setVisible(false);
-					fEvalBrowser.getFrame().dispose();
-				}
 			}
 		});
 		dim = btnClose.getMaximumSize();
@@ -246,54 +218,6 @@ public class EvalOCLDialog extends JDialog {
 		btnClose.setMaximumSize(dim);
 		return btnClose;
 	}
-
-	private JButton getComplexityButton() {
-		Dimension dim;
-		JButton complexityBtn = new JButton("Evaluate OCL Complexity");
-		complexityBtn.setMnemonic('O');
-		complexityBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				getRootPane().setDefaultButton(complexityBtn);
-
-				if (fEvalBrowser != null && fEvalBrowser.getFrame().isVisible()) {
-					// if evaluation browser is already open, update it as well
-					boolean evalSuccess = evaluateOclComplexity(fTextIn.getText(), true);
-
-					if (evalSuccess) {
-						fEvalBrowser.updateEvalBrowser(evaluator.getEvalNodeRoot());
-					}
-				} else {
-					evaluateOclComplexity(fTextIn.getText(), false);
-				}
-			}
-		});
-		dim = complexityBtn.getMaximumSize();
-		dim.width = Short.MAX_VALUE;
-		complexityBtn.setMaximumSize(dim);
-		return complexityBtn;
-	}
-
-	private JButton getHelpButton(JFrame parent) {
-		Dimension dim;
-		JButton btn = new JButton("Help: OCL Complexity");
-		btn.setMnemonic('H');
-		btn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (complexityHelpDialog == null) {
-					complexityHelpDialog = new OCLComplexityHelpDialog(parent);
-				}
-				complexityHelpDialog.setVisible(true);
-			}
-
-		});
-		dim = btn.getMaximumSize();
-		dim.width = Short.MAX_VALUE;
-		btn.setMaximumSize(dim);
-		return btn;
-	}
-	
 
 	private JButton getSetupButton(JFrame parent) {
 		Dimension dim;
@@ -494,74 +418,6 @@ public class EvalOCLDialog extends JDialog {
 			}
 		}
 		return classDiagram;
-	}
-
-	private boolean evaluateOclComplexity(String in, boolean evalTree) {
-		if (this.fSystem == null) {
-			fTextOut.setText("No system!");
-			return false;
-		}
-
-		// clear previous results
-		fTextOut.setText(null);
-
-		// send error output to result window and msg stream
-		StringWriter msgWriter = new StringWriter();
-		PrintWriter out = new PrintWriter(new TeeWriter(new TextComponentWriter(fTextOut), msgWriter), true);
-
-		// compile query
-		Expression expr = OCLCompiler.compileExpression(fSystem.model(), fSystem.state(), in, "Error", out,
-				fSystem.varBindings());
-
-		out.flush();
-		fTextIn.requestFocus();
-
-		// compile errors?
-		if (expr == null) {
-			// try to parse error message and set caret to error position
-			String msg = msgWriter.toString();
-			int colon1 = msg.indexOf(':');
-			if (colon1 != -1) {
-				int colon2 = msg.indexOf(':', colon1 + 1);
-				int colon3 = msg.indexOf(':', colon2 + 1);
-
-				try {
-					int line = Integer.parseInt(msg.substring(colon1 + 1, colon2));
-					int column = Integer.parseInt(msg.substring(colon2 + 1, colon3));
-					int caret = 1 + StringUtil.nthIndexOf(in, line - 1, Options.LINE_SEPARATOR);
-					caret += column;
-
-					// sanity check
-					caret = Math.min(caret, fTextIn.getText().length());
-					fTextIn.setCaretPosition(caret);
-				} catch (NumberFormatException ex) {
-				}
-			}
-			return false;
-		}
-
-		try {
-			// evaluate it with current system state
-			evaluator = new Evaluator(evalTree);
-
-			IComplexityMetric complexityMetric = new ComplexityMetric();
-			expr.processWithVisitor(new ExpressionComplexityVisitor(complexityMetric, true));
-
-			// print result
-			fTextOut.setText(getOclComplexity(complexityMetric));
-
-			return true;
-		} catch (MultiplicityViolationException e) {
-			fTextOut.setText("Could not evaluate. " + e.getMessage());
-		}
-		return false;
-	}
-
-	private String getOclComplexity(IComplexityMetric complexityMetric) {
-		IComplexityMetricResult result = complexityMetric.getWeight();
-		return String.format("NNR: %d | NAN: %d | WNO: %d | NNC: %d | WNM: %d | NPT: %d | NUCA: %d | NUCO: %d | WNN: %d | DN: %d | WCO: %d",
-				result.getNNR(), result.getNAN(), result.getWNO(), result.getNNC(), result.getWNM(), result.getNPT(), result.getNUCA(), result.getNUCO(),
-				result.getWNN(), result.getDN(), result.getWCO());
 	}
 
 }

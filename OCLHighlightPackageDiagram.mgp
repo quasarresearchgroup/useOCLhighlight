@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PackageAnalysis>
+    <Package name="org.tzi.use.gui.plugins.complexity" x="622" y="68"/>
+    <Package name="org.tzi.use.gui.plugins.highlight" x="165" y="184">
+        <DependencyLink destination="org.tzi.use.config"/>
+        <DependencyLink destination="org.tzi.use.gui.views.diagrams"/>
+        <DependencyLink destination="org.tzi.use.gui.views.diagrams.elements"/>
+        <DependencyLink destination="org.tzi.use.gui.views.evalbrowser"/>
+        <DependencyLink destination="org.tzi.use.gui.util"/>
+    </Package>
+    <Package name="org.tzi.use.gui.plugins" x="190" y="99">
+        <DependencyLink destination="org.tzi.use.gui.plugins.highlight"/>
+        <DependencyLink destination="org.tzi.use.runtime"/>
+        <DependencyLink destination="org.tzi.use.gui.main"/>
+        <DependencyLink destination="org.tzi.use.runtime.impl"/>
+    </Package>
+    <Package name="org.tzi.use.config" x="306" y="344"/>
+    <Package name="org.tzi.use.gui.util" x="378" y="428">
+        <DependencyLink destination="org.tzi.use.gui.views.diagrams"/>
+        <DependencyLink destination="org.tzi.use.gui.views.diagrams.elements"/>
+        <DependencyLink destination="org.tzi.use.gui.main"/>
+    </Package>
+    <Package name="org.tzi.use.gui.views.diagrams" x="570" y="469">
+        <DependencyLink destination="org.tzi.use.config"/>
+        <DependencyLink destination="org.tzi.use.gui.views.diagrams.elements"/>
+        <DependencyLink destination="org.tzi.use.gui.util"/>
+    </Package>
+    <Package name="org.tzi.use.gui.views.evalbrowser" x="19" y="326">
+        <DependencyLink destination="org.tzi.use.gui.main"/>
+        <DependencyLink destination="org.tzi.use.gui.util"/>
+    </Package>
+    <Package name="org.tzi.use.gui.views.diagrams.elements" x="28" y="505">
+        <DependencyLink destination="org.tzi.use.gui.views.diagrams"/>
+        <DependencyLink destination="org.tzi.use.gui.util"/>
+    </Package>
+    <Package name="org.tzi.use.gui.views.diagrams.edges" x="611" y="37"/>
+    <Package name="org.tzi.use.runtime" x="71" y="24">
+        <DependencyLink destination="org.tzi.use.runtime.impl"/>
+    </Package>
+    <Package name="org.tzi.use.runtime.impl" x="351" y="38">
+        <DependencyLink destination="org.tzi.use.runtime"/>
+    </Package>
+    <Package name="org.tzi.use.gui.main" x="677" y="246">
+        <DependencyLink destination="org.tzi.use.config"/>
+        <DependencyLink destination="org.tzi.use.gui.views.diagrams.elements"/>
+        <DependencyLink destination="org.tzi.use.gui.views.diagrams"/>
+        <DependencyLink destination="org.tzi.use.gui.views.evalbrowser"/>
+        <DependencyLink destination="org.tzi.use.gui.util"/>
+    </Package>
+</PackageAnalysis>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <Class name="org.tzi.use.gui.plugins.highlight.EvalOCLDialog"
+        x="242" y="127">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association
+            destinationClassName="org.tzi.use.gui.plugins.highlight.OCLHighlightConfigDialog"
+            endpointName="configDialog" kind="Simple"/>
+    </Class>
+    <Class
+        name="org.tzi.use.gui.plugins.highlight.HighlightExpressionVisitor"
+        x="512" y="9">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association
+            destinationClassName="org.tzi.use.gui.plugins.highlight.OCLHighlightConfigDialog"
+            endpointName="configDialog" kind="Simple"/>
+    </Class>
+    <Class name="org.tzi.use.gui.plugins.OCLHighlightPlugin" x="269" y="554">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="org.tzi.use.gui.plugins.OCLHighlightExtent" x="241" y="479">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class
+        name="org.tzi.use.gui.plugins.highlight.OCLHighlightConfigDialog"
+        x="245" y="297">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+</ClassDiagram>

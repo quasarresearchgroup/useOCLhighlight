@@ -1,5 +1,5 @@
-Manifest-Version: 1.2
+Manifest-Version: 1.3
 Plugin-Name: OCLHighlightPlugin
-Plugin-Version: 1.2
-Main-Class: org.tzi.use.gui.plugins.OCLHighlightPlugin
+Plugin-Version: 1.3
+Main-Class: org.quasar.use.gui.plugins.OCLHighlightPlugin
 Plugin-Publisher: Maria Sales

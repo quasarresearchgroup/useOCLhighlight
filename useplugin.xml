@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?use version="5.0.1"?>
-<plugin name="OCLHighlight" version="1.2">
+<plugin name="OCLHighlight" version="1.3">
 	<actions>
 		<action label="Highlight Expression" icon="resources/Highlighter.png"
-			class="org.tzi.use.gui.plugins.OCLHighlightExtent" tooltip="Highlight Expression"
+			class="org.quasar.use.gui.plugins.OCLHighlightExtent" tooltip="Highlight Expression"
 			menu="View" menuitem="OCL Highlight" toolbaritem="plugins"
-			id="org.tzi.use.gui.plugins.OCLHighlightExtent">
+			id="org.quasar.use.gui.plugins.OCLHighlightExtent">
 		</action>
 	</actions>
 </plugin>

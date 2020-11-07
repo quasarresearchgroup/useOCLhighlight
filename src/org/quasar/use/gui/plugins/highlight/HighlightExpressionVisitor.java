@@ -1,4 +1,4 @@
-package org.tzi.use.gui.plugins.highlight;
+package org.quasar.use.gui.plugins.highlight;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
@@ -73,6 +73,7 @@ import org.tzi.use.uml.ocl.expr.ExpressionVisitor;
 import org.tzi.use.uml.ocl.expr.ExpressionWithValue;
 import org.tzi.use.uml.ocl.expr.VarDecl;
 import org.tzi.use.uml.ocl.expr.VarDeclList;
+import org.tzi.use.uml.ocl.type.BagType;
 import org.tzi.use.uml.ocl.type.EnumType;
 import org.tzi.use.uml.ocl.type.Type;
 
@@ -267,7 +268,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 
 	@Override
 	public void visitBagLiteral(ExpBagLiteral exp) {
-		// Noop
+		Arrays.asList(exp.getElemExpr()).get(0).processWithVisitor(this);
 	}
 
 	@Override
@@ -558,6 +559,8 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 		arguments.forEach(argument -> {
 			argument.processWithVisitor(this);
 		});
+		
+		operation.expression().processWithVisitor(this);
 	}
 
 	private void colorizeOperation(MClass visitedOperationClass, MOperation visitedOperation) {
@@ -648,7 +651,9 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 
 	@Override
 	public void visitTupleLiteral(ExpTupleLiteral exp) {
-		// Noop
+		if(exp.getParts() != null) {
+			Arrays.asList(exp.getParts()).forEach(part -> part.getExpression().processWithVisitor(this));
+		}
 	}
 
 	@Override
@@ -669,6 +674,11 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 	private void visitType(Type type) {
 		if (type instanceof MClass) {
 			colorizeClass((MClass) type);
+		} else if (type.isTypeOfBag()) {
+            BagType bag = (BagType) type;
+            visitType(bag.elemType());
+		} else if(type.isTypeOfEnum()) {
+			colorizeEnumType((EnumType) type, configDialog.getEnumColor());
 		}
 	}
 
@@ -679,7 +689,7 @@ public class HighlightExpressionVisitor implements ExpressionVisitor {
 
 	@Override
 	public void visitOclInState(ExpOclInState exp) {
-		// Noop
+		exp.getSourceExpr().processWithVisitor(this);
 	}
 
 	@Override

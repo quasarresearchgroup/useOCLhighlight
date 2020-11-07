@@ -1,4 +1,4 @@
-package org.tzi.use.gui.plugins.highlight;
+package org.quasar.use.gui.plugins.highlight;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
