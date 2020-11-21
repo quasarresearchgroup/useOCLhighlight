@@ -1,50 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PackageAnalysis>
-    <Package name="org.tzi.use.gui.plugins.complexity" x="622" y="68"/>
-    <Package name="org.tzi.use.gui.plugins.highlight" x="165" y="184">
-        <DependencyLink destination="org.tzi.use.config"/>
-        <DependencyLink destination="org.tzi.use.gui.views.diagrams"/>
-        <DependencyLink destination="org.tzi.use.gui.views.diagrams.elements"/>
-        <DependencyLink destination="org.tzi.use.gui.views.evalbrowser"/>
-        <DependencyLink destination="org.tzi.use.gui.util"/>
-    </Package>
-    <Package name="org.tzi.use.gui.plugins" x="190" y="99">
-        <DependencyLink destination="org.tzi.use.gui.plugins.highlight"/>
-        <DependencyLink destination="org.tzi.use.runtime"/>
+    <Package name="org.quasar.use.gui.plugins" x="168" y="31">
         <DependencyLink destination="org.tzi.use.gui.main"/>
+        <DependencyLink destination="org.tzi.use.runtime.gui"/>
+        <DependencyLink destination="org.tzi.use.main"/>
+        <DependencyLink destination="org.quasar.use.gui.plugins.highlight"/>
         <DependencyLink destination="org.tzi.use.runtime.impl"/>
     </Package>
-    <Package name="org.tzi.use.config" x="306" y="344"/>
-    <Package name="org.tzi.use.gui.util" x="378" y="428">
-        <DependencyLink destination="org.tzi.use.gui.views.diagrams"/>
-        <DependencyLink destination="org.tzi.use.gui.views.diagrams.elements"/>
-        <DependencyLink destination="org.tzi.use.gui.main"/>
+    <Package name="org.tzi.use.runtime.impl" x="-52" y="117">
+        <DependencyLink destination="org.tzi.use.util"/>
     </Package>
-    <Package name="org.tzi.use.gui.views.diagrams" x="570" y="469">
+    <Package name="org.tzi.use.gui.main" x="577" y="521">
+        <DependencyLink destination="org.tzi.use.uml.ocl.type"/>
+        <DependencyLink destination="org.tzi.use.parser.ocl"/>
+        <DependencyLink destination="org.tzi.use.util"/>
+        <DependencyLink destination="org.tzi.use.gui.util"/>
         <DependencyLink destination="org.tzi.use.config"/>
-        <DependencyLink destination="org.tzi.use.gui.views.diagrams.elements"/>
-        <DependencyLink destination="org.tzi.use.gui.util"/>
-    </Package>
-    <Package name="org.tzi.use.gui.views.evalbrowser" x="19" y="326">
-        <DependencyLink destination="org.tzi.use.gui.main"/>
-        <DependencyLink destination="org.tzi.use.gui.util"/>
-    </Package>
-    <Package name="org.tzi.use.gui.views.diagrams.elements" x="28" y="505">
         <DependencyLink destination="org.tzi.use.gui.views.diagrams"/>
-        <DependencyLink destination="org.tzi.use.gui.util"/>
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.main"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.value"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.expr"/>
+        <DependencyLink destination="org.tzi.use.uml.sys"/>
     </Package>
-    <Package name="org.tzi.use.gui.views.diagrams.edges" x="611" y="37"/>
-    <Package name="org.tzi.use.runtime" x="71" y="24">
-        <DependencyLink destination="org.tzi.use.runtime.impl"/>
-    </Package>
-    <Package name="org.tzi.use.runtime.impl" x="351" y="38">
-        <DependencyLink destination="org.tzi.use.runtime"/>
-    </Package>
-    <Package name="org.tzi.use.gui.main" x="677" y="246">
+    <Package name="org.tzi.use.main" x="145" y="97">
         <DependencyLink destination="org.tzi.use.config"/>
-        <DependencyLink destination="org.tzi.use.gui.views.diagrams.elements"/>
-        <DependencyLink destination="org.tzi.use.gui.views.diagrams"/>
-        <DependencyLink destination="org.tzi.use.gui.views.evalbrowser"/>
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.util"/>
+        <DependencyLink destination="org.tzi.use.uml.sys"/>
+    </Package>
+    <Package name="org.tzi.use.runtime.gui" x="771" y="77">
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.gui.main"/>
+        <DependencyLink destination="org.tzi.use.main"/>
+    </Package>
+    <Package name="org.tzi.use.gui.views.diagrams" x="720" y="365">
+        <DependencyLink destination="org.tzi.use.config"/>
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.util"/>
         <DependencyLink destination="org.tzi.use.gui.util"/>
+        <DependencyLink destination="org.tzi.use.uml.sys"/>
+    </Package>
+    <Package name="org.tzi.use.uml.mm" x="827" y="219">
+        <DependencyLink destination="org.tzi.use.config"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.type"/>
+        <DependencyLink destination="org.tzi.use.util"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.expr"/>
+        <DependencyLink destination="org.tzi.use.uml.sys"/>
+    </Package>
+    <Package name="org.tzi.use.uml.ocl.expr" x="386" y="245">
+        <DependencyLink destination="org.tzi.use.config"/>
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.type"/>
+        <DependencyLink destination="org.tzi.use.util"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.value"/>
+        <DependencyLink destination="org.tzi.use.uml.sys"/>
+    </Package>
+    <Package name="org.tzi.use.uml.ocl.type" x="-22" y="359">
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.util"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.value"/>
+    </Package>
+    <Package name="org.tzi.use.config" x="655" y="142">
+        <DependencyLink destination="org.tzi.use.util"/>
+    </Package>
+    <Package name="org.tzi.use.gui.util" x="760" y="468">
+        <DependencyLink destination="org.tzi.use.gui.views.diagrams"/>
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.gui.main"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.expr"/>
+    </Package>
+    <Package name="org.tzi.use.parser.ocl" x="74" y="469">
+        <DependencyLink destination="org.tzi.use.config"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.type"/>
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.util"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.value"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.expr"/>
+        <DependencyLink destination="org.tzi.use.uml.sys"/>
+    </Package>
+    <Package name="org.tzi.use.uml.ocl.value" x="247" y="153">
+        <DependencyLink destination="org.tzi.use.uml.ocl.type"/>
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.util"/>
+        <DependencyLink destination="org.tzi.use.uml.sys"/>
+    </Package>
+    <Package name="org.tzi.use.uml.sys" x="362" y="551">
+        <DependencyLink destination="org.tzi.use.config"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.type"/>
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.util"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.value"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.expr"/>
+    </Package>
+    <Package name="org.tzi.use.util" x="-17" y="211">
+        <DependencyLink destination="org.tzi.use.config"/>
+    </Package>
+    <Package name="org.quasar.use.gui.plugins.highlight" x="425" y="21">
+        <DependencyLink destination="org.tzi.use.config"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.type"/>
+        <DependencyLink destination="org.tzi.use.gui.views.diagrams"/>
+        <DependencyLink destination="org.tzi.use.uml.mm"/>
+        <DependencyLink destination="org.tzi.use.parser.ocl"/>
+        <DependencyLink destination="org.tzi.use.main"/>
+        <DependencyLink destination="org.tzi.use.util"/>
+        <DependencyLink destination="org.tzi.use.gui.util"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.value"/>
+        <DependencyLink destination="org.tzi.use.uml.ocl.expr"/>
+        <DependencyLink destination="org.tzi.use.uml.sys"/>
     </Package>
 </PackageAnalysis>

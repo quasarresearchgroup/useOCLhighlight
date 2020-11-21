@@ -41,7 +41,6 @@ import org.tzi.use.gui.views.diagrams.elements.Rolename;
 import org.tzi.use.gui.views.diagrams.elements.edges.BinaryAssociationClassOrObject;
 import org.tzi.use.gui.views.diagrams.elements.edges.EdgeBase;
 import org.tzi.use.gui.views.diagrams.elements.edges.SimpleEdge;
-import org.tzi.use.gui.views.evalbrowser.ExprEvalBrowser;
 import org.tzi.use.main.ChangeEvent;
 import org.tzi.use.main.ChangeListener;
 import org.tzi.use.main.Session;
@@ -176,7 +175,6 @@ public class EvalOCLDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				getRootPane().setDefaultButton(btnEval);
 				evaluate(fTextIn.getText(), false);
-				
 			}
 		});
 		Dimension dim = btnEval.getMaximumSize();
